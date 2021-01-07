@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ContactForm;
 use Illuminate\Support\Facades\DB;
 use App\Services\CheckFormData;
+use App\Http\Requests\StoreContactForm;
 
 class ContactFormController extends Controller
 {
@@ -15,16 +16,20 @@ class ContactFormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+        // dd($request);
         // $contacts = ContactForm::all();
         //クエリビルダ
-        $contacts = DB::table('contact_forms')
-        ->select('id', 'name', 'title', 'created_at')
-        ->orderBy('created_at', 'asc')
-        ->get();
+        // $contacts = DB::table('contact_forms')
+        // ->select('id', 'name', 'title', 'created_at')
+        // ->orderBy('created_at', 'asc')
+        // ->paginate(20);
 
+        $query = DB::table('contact_forms');
+
+        $query->select('id', 'name', 'title', 'create_at')
         // dd($contacts);
 
         return view('contact.index', compact('contacts'));
@@ -47,7 +52,7 @@ class ContactFormController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreContactForm $request)
     {
         $contact = new ContactForm;
 
